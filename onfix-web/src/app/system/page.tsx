@@ -34,6 +34,20 @@ export const modules = [
     benefits: ["Drag-and-drop calendar", "Channel manager integration", "Post restaurant charges to room"],
     workflow: "Guest checks in -> Orders dinner to room -> Charges sync to final folio at checkout.",
   },
+  {
+    id: "kds",
+    title: "Kitchen Command Center",
+    description: "Color-coded, real-time Kitchen Display System that eliminates paper tickets and brings order to the chaos.",
+    benefits: ["Multi-section routing (Hot Kitchen, Bar, Pastry)", "One-tap order bumping & status tracking", "Waiter notification & task claiming"],
+    workflow: "Order enters POS → Routes to correct kitchen section → Cook prepares & bumps → Waiter notified → Guest served.",
+  },
+  {
+    id: "staff",
+    title: "People & Workforce",
+    description: "Complete HR toolkit from shift scheduling to salary processing, purpose-built for hospitality teams.",
+    benefits: ["Visual roster with reusable shift templates", "Leave request & approval workflows", "Automated salary & deduction calculations"],
+    workflow: "Create shift template → Assign staff to weekly roster → Track attendance → Process payroll → Generate pay records.",
+  },
 ];
 
 const featureCategories = [
@@ -87,6 +101,31 @@ const featureCategories = [
       { name: "Zero-Latency Real-Time Sync", desc: "Experience immediate updates across your entire venue as the POS, KDS, and inventory communicate instantly via our localized network bridge." },
       { name: "Hardware-Agnostic Thermal Routing", desc: "Coordinate complex, multi-kitchen operations with a robust Node.js print bridge that routes tickets to the exact right station, every time." },
     ]
+  },
+  {
+    title: "Guest Experience",
+    icon: TrendingUp,
+    color: "text-violet-500",
+    bg: "bg-violet-500/10",
+    border: "border-violet-500/20",
+    features: [
+      { name: "Smart Booking Calendar", desc: "Visualize room availability, manage reservations, and eliminate double-bookings with a drag-and-drop booking management interface." },
+      { name: "Guest Self-Service Portal", desc: "Let guests order room service, request housekeeping, set DND status, and call reception — all from their phone." },
+      { name: "Housekeeping Command Board", desc: "Give your housekeeping team real-time visibility into room statuses, cleaning assignments, and maintenance requests." },
+      { name: "Customer Profiles & History", desc: "Automatically build rich guest profiles with order history, preferences, and spending patterns for personalized service." },
+    ]
+  },
+  {
+    title: "Financial Control",
+    icon: Globe,
+    color: "text-amber-500",
+    bg: "bg-amber-500/10",
+    border: "border-amber-500/20",
+    features: [
+      { name: "Cash Drawer Sessions", desc: "Open, track, and reconcile cash drawers per shift with denomination counting and audit trail documentation." },
+      { name: "Expense Tracking & Categorization", desc: "Log every operational expense with categories and detailed breakdowns for complete financial visibility." },
+      { name: "Supplier Payment Tracking", desc: "Track outstanding balances, payment history, and returns for every supplier in your network." },
+    ]
   }
 ];
 
@@ -127,7 +166,7 @@ export default function SystemPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featureCategories.map((cat, idx) => (
               <div key={idx} className="bg-card border border-border/50 rounded-[2rem] p-8 lg:p-10 shadow-sm hover:shadow-[0_15px_40px_rgba(255,92,0,0.08)] transition-all duration-500 flex flex-col group/card">
                 <div className="flex items-center gap-5 mb-10">
