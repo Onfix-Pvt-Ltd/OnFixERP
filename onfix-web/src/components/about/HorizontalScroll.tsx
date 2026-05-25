@@ -2,16 +2,14 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Target, Lightbulb, Heart, Shield } from "lucide-react";
+import { Target, Lightbulb, Heart, Shield, Zap, Globe, type LucideIcon } from "lucide-react";
+import type { AboutValueVM } from "@/lib/cms";
 
-const values = [
-  { icon: Target, title: "Absolute Precision", desc: "In hospitality, a single dropped ticket means a bad review. We engineer for 99.999% uptime and zero-latency operations." },
-  { icon: Lightbulb, title: "Continuous Innovation", desc: "We don't just follow trends. We push the boundaries of what a modern POS and PMS can achieve through AI and automation." },
-  { icon: Heart, title: "Customer Obsession", desc: "Our support team works 24/7 because your business never sleeps. Your success is our ultimate metric." },
-  { icon: Shield, title: "Uncompromising Security", desc: "Bank-grade encryption and strict access controls protect your financial data and guest privacy at all times." },
-];
+// Maps the value `icon` string (from the About global) to a component.
+// Keep in sync with the select options in AboutContent.ts.
+const ICON_MAP: Record<string, LucideIcon> = { Target, Lightbulb, Heart, Shield, Zap, Globe };
 
-export function HorizontalScroll() {
+export function HorizontalScroll({ values }: { values: AboutValueVM[] }) {
   const targetRef = useRef<HTMLDivElement | null>(null);
   
   const { scrollYProgress } = useScroll({ 
@@ -40,25 +38,28 @@ export function HorizontalScroll() {
         {/* Horizontal Scrolling Container */}
         <div className="w-full overflow-hidden">
           <motion.div style={{ x }} className="flex gap-8 px-6 md:px-12 w-max">
-            {values.map((val, idx) => (
-              <div 
-                key={idx} 
+            {values.map((val, idx) => {
+              const Icon = ICON_MAP[val.icon] ?? Target;
+              return (
+              <div
+                key={idx}
                 className="w-[85vw] md:w-[500px] h-[450px] p-12 rounded-[3rem] bg-card border border-border/50 flex flex-col justify-center relative overflow-hidden group hover:border-primary/50 transition-all duration-700 hover:shadow-[0_0_50px_rgba(255,92,0,0.1)]"
               >
                  {/* Background Glow on hover */}
                  <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                 
+
                  {/* Animated grid inside card */}
                  <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none group-hover:opacity-20 transition-opacity duration-700" />
 
                  <div className="h-24 w-24 rounded-[2rem] bg-foreground text-background flex items-center justify-center mb-10 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-2xl relative z-10">
-                   <val.icon size={48} strokeWidth={1.5} />
+                   <Icon size={48} strokeWidth={1.5} />
                  </div>
                  
                  <h3 className="text-4xl font-heading font-bold tracking-tight mb-6 relative z-10">{val.title}</h3>
                  <p className="text-muted-foreground text-xl leading-relaxed relative z-10">{val.desc}</p>
               </div>
-            ))}
+              );
+            })}
           </motion.div>
         </div>
 

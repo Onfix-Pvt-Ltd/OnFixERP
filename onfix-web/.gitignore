@@ -32,6 +32,12 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+
+# Payload CMS local database
+onfix-cms.sqlite
+onfix-cms.sqlite-shm
+onfix-cms.sqlite-wal
 
 # vercel
 .vercel

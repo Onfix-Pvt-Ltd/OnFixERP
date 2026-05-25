@@ -1,8 +1,15 @@
 import Link from "next/link";
-import { Mail, MapPin, Phone, Globe } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
+import { getSiteSettings } from "@/lib/cms";
 
-export function Footer() {
+export async function Footer() {
   const currentYear = new Date().getFullYear();
+  const site = await getSiteSettings();
+  const socials: [string, string][] = [
+    ["LinkedIn", site.social.linkedin],
+    ["Twitter", site.social.twitter],
+    ["Instagram", site.social.instagram],
+  ];
 
   return (
     <footer className="bg-muted/30 border-t border-border pt-16 pb-8">
@@ -14,18 +21,18 @@ export function Footer() {
               <img src="/logos/Onfix%20Oval%20Logo%20Alt.png" alt="ONFIX POS" className="h-8 w-auto object-contain hidden dark:block" />
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
-              The premium All-in-One Hospitality ERP System. Scale your restaurant, manage your hotel, and streamline operations with enterprise-grade reliability.
+              {site.tagline}
             </p>
             <div className="flex items-center gap-4 pt-2">
-              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm font-semibold">
-                LinkedIn
-              </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm font-semibold">
-                Twitter
-              </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm font-semibold">
-                Instagram
-              </Link>
+              {socials.map(([label, href]) => (
+                <Link
+                  key={label}
+                  href={href || "#"}
+                  className="text-muted-foreground hover:text-primary transition-colors text-sm font-semibold"
+                >
+                  {label}
+                </Link>
+              ))}
             </div>
           </div>
 
@@ -55,15 +62,15 @@ export function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-primary shrink-0 mt-0.5" />
-                <span className="text-sm text-muted-foreground">123 Innovation Drive,<br/>Tech District, CA 90210</span>
+                <span className="text-sm text-muted-foreground whitespace-pre-line">{site.contact.address}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-primary shrink-0" />
-                <span className="text-sm text-muted-foreground">+1 (800) 123-4567</span>
+                <span className="text-sm text-muted-foreground">{site.contact.phone}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={18} className="text-primary shrink-0" />
-                <span className="text-sm text-muted-foreground">hello@onfixpos.com</span>
+                <span className="text-sm text-muted-foreground">{site.contact.email}</span>
               </li>
             </ul>
           </div>
@@ -71,11 +78,12 @@ export function Footer() {
 
         <div className="border-t border-border pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground text-center md:text-left">
-            &copy; {currentYear} ONFIX POS. All rights reserved.
+            &copy; {currentYear} {site.copyrightName}. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
-            <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Privacy Policy</Link>
-            <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Terms of Service</Link>
+            <Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Privacy Policy</Link>
+            <Link href="/terms-of-service" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Terms of Service</Link>
+            <Link href="/cookie-policy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Cookies</Link>
           </div>
         </div>
       </div>

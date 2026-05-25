@@ -3,21 +3,22 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calculator, DollarSign, Clock, Leaf } from "lucide-react";
+import type { RoiConfigVM } from "@/lib/cms";
 
-export function RoiCalculator() {
-  const [tables, setTables] = useState(25);
-  const [ticketSize, setTicketSize] = useState(45);
-  const [turns, setTurns] = useState(3);
+export function RoiCalculator({ roi }: { roi: RoiConfigVM }) {
+  const [tables, setTables] = useState(roi.defaultTables);
+  const [ticketSize, setTicketSize] = useState(roi.defaultTicketSize);
+  const [turns, setTurns] = useState(roi.defaultTurns);
 
-  // Math logic
+  // Math logic — uplift assumptions come from the Home Page global (editable in /admin).
   const dailyRevenueBefore = tables * turns * ticketSize;
-  const newTicketSize = ticketSize * 1.15; // 15% increase via smart upselling
-  const newTurns = turns * 1.2; // 20% faster turns via QR & KDS
+  const newTicketSize = ticketSize * (1 + roi.ticketUpliftPct / 100); // upsell uplift
+  const newTurns = turns * (1 + roi.turnsUpliftPct / 100); // faster turns via QR & KDS
   const dailyRevenueAfter = tables * newTurns * newTicketSize;
-  
+
   const monthlyExtraRevenue = Math.round((dailyRevenueAfter - dailyRevenueBefore) * 30);
-  const hoursSavedMonthly = Math.round(tables * turns * (10 / 60) * 30); // 10 mins saved per turn
-  const wasteSavedMonthly = Math.round((dailyRevenueBefore * 30) * 0.05); // 5% waste reduction via FIFO
+  const hoursSavedMonthly = Math.round(tables * turns * (roi.minutesSavedPerTurn / 60) * 30);
+  const wasteSavedMonthly = Math.round((dailyRevenueBefore * 30) * (roi.wasteReductionPct / 100));
 
   return (
     <section className="py-32 relative bg-background overflow-hidden">
@@ -84,7 +85,7 @@ export function RoiCalculator() {
             
             <div className="mt-10 p-4 rounded-2xl bg-primary/10 border border-primary/20">
               <p className="text-xs text-primary font-medium text-center">
-                Calculations based on aggregate data from ONFIX enterprise clients achieving 15% upsell rates and 20% faster table turns.
+                Calculations based on aggregate data from ONFIX enterprise clients achieving {roi.ticketUpliftPct}% upsell rates and {roi.turnsUpliftPct}% faster table turns.
               </p>
             </div>
           </div>
@@ -107,7 +108,7 @@ export function RoiCalculator() {
                   </span>
                 </div>
                 <p className="mt-6 text-white/90 font-medium max-w-sm">
-                  Generated through frictionless QR upselling and turning tables 20% faster during peak hours.
+                  Generated through frictionless QR upselling and turning tables {roi.turnsUpliftPct}% faster during peak hours.
                 </p>
               </div>
             </motion.div>

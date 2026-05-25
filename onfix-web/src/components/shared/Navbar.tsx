@@ -18,7 +18,6 @@ export function Navbar() {
   }, []);
 
   const navLinks = [
-    { name: "Home", href: "/" },
     { name: "System", href: "/system" },
     { name: "Pricing", href: "/pricing" },
     { name: "Reviews", href: "/reviews" },
@@ -60,13 +59,19 @@ export function Navbar() {
             ))}
           </nav>
 
-          <div className="hidden md:flex items-center gap-4 relative z-10">
+          <div className="hidden md:flex items-center gap-3 relative z-10">
             <ThemeToggle />
             <Link
-              href="/contact"
+              href="/login"
+              className="text-sm font-semibold text-foreground/70 hover:text-foreground px-4 py-2 rounded-full hover:bg-foreground/5 transition-all"
+            >
+              Sign in
+            </Link>
+            <Link
+              href="/pricing"
               className="group relative inline-flex h-10 items-center justify-center overflow-hidden rounded-full bg-foreground px-6 font-semibold text-background transition-all hover:scale-[1.02] active:scale-95"
             >
-              <span className="relative z-10">Book Demo</span>
+              <span className="relative z-10">Get Started</span>
               <div className="absolute inset-0 z-0 h-full w-full bg-gradient-to-r from-primary to-orange-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
             </Link>
           </div>
@@ -98,11 +103,18 @@ export function Navbar() {
             </Link>
           ))}
           <Link
-            href="/contact"
+            href="/login"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="bg-primary text-primary-foreground px-4 py-3 rounded-md text-center font-semibold mt-2"
+            className="text-base font-medium px-4 py-2 hover:bg-muted rounded-md transition-colors"
           >
-            Book Demo
+            Sign in
+          </Link>
+          <Link
+            href="/pricing"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="bg-foreground text-background px-4 py-3 rounded-md text-center font-semibold mt-2"
+          >
+            Get Started
           </Link>
         </div>
       )}
