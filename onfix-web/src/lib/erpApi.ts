@@ -249,6 +249,9 @@ const TERM_TO_PER_PROPERTY: Record<PlanTerm, keyof Plan> = {
 
 export function getPrice(plan: Plan | undefined, term: PlanTerm): number {
   if (!plan) return 0;
+  if (term === "Annual") {
+    return Math.round(plan.priceMonthly * 0.82 * 100) / 100;
+  }
   const v = plan[TERM_TO_FIELD[term]];
   return typeof v === "number" ? v : 0;
 }
@@ -258,6 +261,9 @@ export function getPerPropertyPrice(
   term: PlanTerm
 ): number {
   if (!plan) return 0;
+  if (term === "Annual") {
+    return Math.round((plan.pricePerPropertyMonthly ?? 0) * 0.82 * 100) / 100;
+  }
   const v = plan[TERM_TO_PER_PROPERTY[term]];
   return typeof v === "number" ? v : 0;
 }
@@ -279,8 +285,6 @@ export function getEnterpriseTotal(
 
 export const ALL_TERMS: PlanTerm[] = [
   "Monthly",
-  "6 Months",
   "Annual",
-  "3 Years",
-  "5 Years",
 ];
+

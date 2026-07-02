@@ -28,7 +28,7 @@ const FAQS = [
   },
   {
     q: "Do you offer discounts for annual billing?",
-    a: "Yes. Multi-year plans save you significantly compared to monthly billing. The discount is applied automatically when you select a longer term.",
+    a: "Yes. Annual plans save you 18% compared to monthly billing. The discount is applied automatically when you select the Annual option.",
   },
   {
     q: "Can I add rooms to an existing Professional plan?",
@@ -193,7 +193,7 @@ export function PricingClient({
 
       {/* Term selector — neutral pill toggle, no orange */}
       <div className="flex justify-center mb-16">
-        <div className="inline-flex items-center gap-1 p-1.5 rounded-full bg-muted/40 border border-border/50">
+        <div className="inline-flex items-center gap-1.5 p-1.5 rounded-full bg-muted/40 border border-border/50">
           {ALL_TERMS.map((t) => {
             const active = term === t;
             return (
@@ -201,14 +201,19 @@ export function PricingClient({
                 key={t}
                 type="button"
                 onClick={() => setTerm(t)}
-                className={`px-5 py-2 rounded-full text-sm font-bold transition-all ${
+                className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all flex items-center gap-2 ${
                   active
                     ? "bg-background text-foreground shadow-[0_2px_10px_rgba(0,0,0,0.08)]"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
                 aria-pressed={active}
               >
-                {t}
+                <span>{t}</span>
+                {t === "Annual" && (
+                  <span className="text-[10px] bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded-full font-extrabold uppercase tracking-wide">
+                    Save 18%
+                  </span>
+                )}
               </button>
             );
           })}
@@ -314,6 +319,15 @@ export function PricingClient({
                           </span>
                         )}
                       </div>
+                      {term === "Annual" && total > 0 && (
+                        <p
+                          className={`text-xs mt-1 font-semibold ${
+                            isPopular ? "text-background/50" : "text-muted-foreground"
+                          }`}
+                        >
+                          {formatPrice(total * 12, plan.currency)} billed annually
+                        </p>
+                      )}
                       {isEnterprise && total > 0 && (
                         <p
                           className={`text-xs mt-1 ${
